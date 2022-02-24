@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "PaylocityDatabaseConnection": "Server=tcp:paylocityint.database.windows.net,1433;Initial Catalog=paylocity;Persist Security Info=False;User ID=ayyappangs;Password=Paylocity123#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}
