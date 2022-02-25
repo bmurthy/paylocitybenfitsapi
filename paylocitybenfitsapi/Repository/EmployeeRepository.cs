@@ -83,7 +83,8 @@ namespace paylocitybenfitsapi.Repository
                 var query = @"select e.EmployeeId,e.EmployeeFirstName,e.EmployeeLastName,e.NumberofDependents,dd.DependentName,dd.DependentNumber, dd.RelationShip,
                                 bs.Salary, bs.Benefits, bs.CostToCompany
                                 from Employee e left join DependentDetails dd on e.employeeId = dd.employeeid
-                                inner join BenefitSummary bs on e.employeeId = bs.employeeid";
+                                inner join BenefitSummary bs on e.employeeId = bs.employeeid
+                                order by e.EmployeeFirstName,e.EmployeeLastName";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -163,39 +164,6 @@ namespace paylocitybenfitsapi.Repository
                 DynamicParameters parameters;
 
                 List<Dependent> dependentList = MapDependents(employeeCostToCompany);
-
-
-
-                query = @"INSERT INTO [dbo].[EmployeeCostToCompany]([EmployeeName],[DependentName1],[DependentName2] ,[DependentName3],[DependentName4],[Salary]
-           ,[Benefits]
-           ,[CostToCompany]
-           ,[UpdatedDate])
-     VALUES
-           (@EmployeeName
-           ,@DependentName1
-           ,@DependentName2
-           ,@DependentName3
-           ,@DependentName4
-           ,@Salary
-           ,@Benefits
-           ,@CostToCompany
-           ,@UpdatedDate)";
-                parameters = new DynamicParameters();
-                parameters.Add("EmployeeName", employeeCostToCompany.FirstName + " " + employeeCostToCompany.LastName, DbType.String);
-                parameters.Add("DependentName1", employeeCostToCompany.DependentName1, DbType.String);
-                parameters.Add("DependentName2", employeeCostToCompany.DependentName2, DbType.String);
-                parameters.Add("DependentName3", employeeCostToCompany.DependentName3, DbType.String);
-                parameters.Add("DependentName4", employeeCostToCompany.DependentName4, DbType.String);
-                parameters.Add("Salary", employeeCostToCompany.Salary, DbType.Decimal);
-                parameters.Add("Benefits", employeeCostToCompany.Benefits, DbType.Decimal);
-                parameters.Add("CostToCompany", employeeCostToCompany.CostToCompany, DbType.Decimal);
-                parameters.Add("UpdatedDate", DateTime.Now, DbType.DateTime);
-                using (var connection = paylocityDatabase.CreateConnection())
-                {
-                    await connection.ExecuteAsync(query, parameters);
-                }
-
-
                 query = @"INSERT INTO [dbo].[Employee]([EmployeeId],[EmployeeFirstName],[EmployeeLastName],[NumberofDependents],[ModifiedUser],[ModifiedDateTime])
      VALUES
            (@EmployeeId
